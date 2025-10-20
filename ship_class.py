@@ -25,18 +25,42 @@ class Ship:
         self.hit = hit
         Ship.ships_list.append(self)
 
-
-    @classmethod
-    def get_ship_by_coord(cls, coord):
+    def get_ship_by_coord(self, coord):
         """Construction d'un dictionnaire permettant de connaitre l'éventuel bateau
            présent sur chaque case de la grille.
 
         :return: dictionnaire dont chaque clé est les coordonnées
                  d'une case d'un navire, et sa valeur le navire en question
         """
-        ship_found = next((ship for ship in cls.ships_list if ship.coord == coord), None)
+        ship_found = next((ship for ship in self.ships_list if ship.coord == coord), None)
         return ship_found
 
     def ship_is_hit(self, shot_coord):
-        """Indique si un navire est touché par un tir aux coordonnées indiquées."""
+        """Indique si un navire est touché par un tir aux coordonnées indiquées.
+        :rtype: bool
+        """
         return shot_coord in self.ships_list
+
+    def ship_is_sunk(self):
+        """Indique si un navire est coulé.
+        :rtype: bool
+        :return:
+        """
+        return not any(self.ships_list.values())
+
+    def analyze_shot(self, shot_coord):
+        """Analyse les conséquences d'un tir sur un navire :
+
+        - teste si le navire est touché par le tir, le signale et le mémorise alors
+        - teste si le navire est ainsi coulé, le signale dans ce cas,
+          et le supprime de la flotte
+
+        :param shot_coord:
+        """
+        if self.ship_is_hit(shot_coord):
+            print('Un navire a été touché par votre tir !')
+            self.ships_list[shot_coord] = False
+            if self.ship_is_sunk():
+                print('Le navire touché est coulé !!')
+                # le navire est supprimé de la flotte
+                self.ships_list.remove(shot_coord)
