@@ -3,6 +3,7 @@
 
 import grid_class
 import ship_class
+from ship_class import Ship
 from aircraft_carrier_class import AircraftCarrier
 from cruiser_class import Cruiser
 from destroyer_class import Destroyer
@@ -23,14 +24,14 @@ torpedo_boat = TorpedoBoat()
 # d'indiquer une case où il souhaite effectuer un tir                        #
 # -------------------------------------------------------------------------- #
 
-ship_found = ship_class.Ship.get_ship_by_coord()
-while ship_class.Ship.ships_list:
+ship_found = Ship.get_ship_by_coord(ship_class.ships_list)
+while Ship.ships_list:
     grid.display_grid()
     next_shot_coord = grid.ask_coord()
     grid.played_shots.add(next_shot_coord)
-    ship_shot = ship_class.Ship.ship_by_coord(next_shot_coord)
-    if ship_shot and ship_shot in ship_class.Ship.ships_list:
-        ship_class.Ship.analyze_shot(ship_shot, next_shot_coord)
+    ship_shot = ship_found.get(next_shot_coord)
+    if ship_shot and ship_shot in Ship.ships_list:
+        Ship.analyze_shot(ship_shot, next_shot_coord)
     else:
         print("Votre tir est tombé dans l'eau")
     print()

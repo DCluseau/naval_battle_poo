@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
-
-
+from naval_battle_no_poo import ships_list
 
 
 class Ship:
-    # dimensions = 0
-    # ship_type = ""
-    # coord = (0, 0)
-    # hit = False
     ships_list = []
 
     def __init__(self, dimensions, name, coord, hit):
@@ -25,15 +20,17 @@ class Ship:
         self.hit = hit
         Ship.ships_list.append(self)
 
-    def get_ship_by_coord(self, coord):
+    def get_ship_by_coord(self):
         """Construction d'un dictionnaire permettant de connaitre l'éventuel bateau
-           présent sur chaque case de la grille.
+       présent sur chaque case de la grille.
 
+        :rtype: dict[Any, Any]
         :return: dictionnaire dont chaque clé est les coordonnées
                  d'une case d'un navire, et sa valeur le navire en question
         """
-        ship_found = next((ship for ship in self.ships_list if ship.coord == coord), None)
-        return ship_found
+
+        return {ship_coord: ship for ship in self.ships_list[ships_list]
+                                 for ship_coord in ship}
 
     def ship_is_hit(self, shot_coord):
         """Indique si un navire est touché par un tir aux coordonnées indiquées.
